@@ -1,0 +1,129 @@
+import React from 'react';
+import './{{COMPONENT_NAME}}.css';
+
+export interface TableColumn<T> {
+  key: keyof T;
+  header: string;
+  sortable?: boolean;
+  render?: (value: T[keyof T], row: T) => React.ReactNode;
+}
+
+export interface {{COMPONENT_NAME}}Props<T = any> {
+{{PROPS}}
+}
+
+/**
+ * {{COMPONENT_DESCRIPTION}}
+ */
+export function {{COMPONENT_NAME}}<T = any>({
+  {{PROP_DESTRUCTURING}}
+}: {{COMPONENT_NAME}}Props<T>) {
+  const [sortColumn, setSortColumn] = React.useState<keyof T | null>(null);
+  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('asc');
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  const handleSort = (column: keyof T) => {
+    if (!sortable) return;
+
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedData = React.useMemo(() => {
+    if (!sortColumn) return data;
+
+    return [...data].sort((a, b) => {
+      const aVal = a[sortColumn];
+      const bVal = b[sortColumn];
+      const modifier = sortDirection === 'asc' ? 1 : -1;
+
+      if (aVal < bVal) return -1 * modifier;
+      if (aVal > bVal) return 1 * modifier;
+      return 0;
+    });
+  }, [data, sortColumn, sortDirection]);
+
+  const paginatedData = React.useMemo(() => {
+    if (!pagination) return sortedData;
+
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    return sortedData.slice(start, end);
+  }, [sortedData, currentPage, pageSize, pagination]);
+
+  if (loading) {
+    return <div className="table-loading">Loading...</div>;
+  }
+
+  if (data.length === 0) {
+    return <div className="table-empty">{emptyMessage}</div>;
+  }
+
+  return (
+    <div className="{{COMPONENT_CLASS}}">
+      <table>
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <th
+                key={String(column.key)}
+                onClick={() => column.sortable && handleSort(column.key)}
+                className={column.sortable ? 'sortable' : ''}
+              >
+                {column.header}
+                {sortColumn === column.key && (
+                  <span className="sort-indicator">
+                    {sortDirection === 'asc' ? '↑' : '↓'}
+                  </span>
+                )}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {paginatedData.map((row, index) => (
+            <tr
+              key={index}
+              onClick={() => onRowClick?.(row)}
+              className={onRowClick ? 'clickable' : ''}
+            >
+              {columns.map((column) => (
+                <td key={String(column.key)}>
+                  {column.render
+                    ? column.render(row[column.key], row)
+                    : String(row[column.key])}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {pagination && (
+        <div className="table-pagination">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {Math.ceil(data.length / pageSize)}
+          </span>
+          <button
+            onClick={() => setCurrentPage((p) => p + 1)}
+            disabled={currentPage >= Math.ceil(data.length / pageSize)}
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+{{COMPONENT_NAME}}.displayName = '{{COMPONENT_NAME}}';

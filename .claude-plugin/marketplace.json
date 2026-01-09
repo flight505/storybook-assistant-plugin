@@ -1,0 +1,23 @@
+{
+  "display_name": "Storybook Assistant",
+  "tagline": "AI-powered Storybook 9 development with testing & visual generation",
+  "icon": "🎨",
+  "category": "Development Tools",
+  "tags": ["storybook", "component-testing", "ui-development", "accessibility", "visual-generation"],
+  "screenshots": [],
+  "demo_video": null,
+  "long_description": "Comprehensive Storybook 9 assistant that sets up modern component development workflows with:\n\n✅ Auto-configured Storybook 9 with framework detection (React, Vue, Svelte, Angular, Next.js)\n✅ Story generation for existing components with interaction & accessibility tests\n✅ Component scaffolding with SOTA patterns\n✅ AI-powered visual generation (optional): style guides, mockups, diagrams\n✅ Multi-platform support: Web (full), Tauri (full), Electron (partial)\n✅ Vitest + Playwright integration for real browser testing\n✅ WCAG accessibility testing with axe-core\n\nBuilt with 2026 best practices for modern component development.",
+  "installation": {
+    "quick_start": "Run `/setup-storybook` in your project to get started",
+    "requirements": [
+      "Node.js 20+",
+      "npm 10+",
+      "CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY",
+      "OPENROUTER_API_KEY (optional, for visual generation)"
+    ]
+  },
+  "support": {
+    "documentation": "https://github.com/flight505/storybook-assistant-plugin/blob/main/README.md",
+    "issues": "https://github.com/flight505/storybook-assistant-plugin/issues"
+  }
+}

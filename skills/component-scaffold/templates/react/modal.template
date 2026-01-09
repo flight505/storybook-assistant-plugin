@@ -1,0 +1,21 @@
+import React from 'react';
+import './{{COMPONENT_NAME}}.css';
+
+export interface {{COMPONENT_NAME}}Props {
+{{PROPS}}
+}
+
+/**
+ * {{COMPONENT_DESCRIPTION}}
+ */
+export function {{COMPONENT_NAME}}({
+  {{PROP_DESTRUCTURING}}
+}: {{COMPONENT_NAME}}Props) {
+  {{COMPONENT_LOGIC}}
+
+  return (
+    {{COMPONENT_CONTENT}}
+  );
+}
+
+{{COMPONENT_NAME}}.displayName = '{{COMPONENT_NAME}}';

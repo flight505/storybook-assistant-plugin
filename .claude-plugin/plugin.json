@@ -1,0 +1,72 @@
+{
+  "name": "storybook-assistant",
+  "version": "1.0.0",
+  "description": "Comprehensive Storybook 9 development assistant with visual generation, testing, and multi-platform support (Web, Tauri, Electron)",
+  "author": "flight505",
+  "license": "MIT",
+  "repository": "https://github.com/flight505/storybook-assistant-plugin",
+  "keywords": [
+    "storybook",
+    "component",
+    "testing",
+    "vitest",
+    "playwright",
+    "accessibility",
+    "tauri",
+    "electron",
+    "visual-generation",
+    "ai"
+  ],
+  "skills": [
+    {
+      "name": "storybook-config",
+      "description": "Generate and configure Storybook 9 for your project with automatic framework detection and SOTA best practices"
+    },
+    {
+      "name": "story-generation",
+      "description": "Generate story files for existing components with interaction tests, accessibility checks, and multiple variants"
+    },
+    {
+      "name": "component-scaffold",
+      "description": "Scaffold new components with stories, tests, and documentation following SOTA patterns and best practices"
+    },
+    {
+      "name": "visual-design",
+      "description": "Generate style guides, component mockups, and visual assets using AI (optional - requires OPENROUTER_API_KEY)"
+    },
+    {
+      "name": "testing-suite",
+      "description": "Set up and generate comprehensive tests: interaction (play functions), accessibility (a11y), and visual regression"
+    },
+    {
+      "name": "platform-support",
+      "description": "Platform-specific guidance and setup for Tauri (full support) and Electron (partial support with architectural patterns)"
+    },
+    {
+      "name": "style-guide-generator",
+      "description": "Generate comprehensive design system documentation and style guides with visual assets"
+    }
+  ],
+  "commands": [
+    "/setup-storybook",
+    "/generate-stories",
+    "/create-component"
+  ],
+  "hooks": ["SessionStart"],
+  "requirements": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "optional_dependencies": {
+    "openrouter": {
+      "env_var": "OPENROUTER_API_KEY",
+      "purpose": "AI-powered visual generation (style guides, mockups, diagrams)",
+      "required": false
+    }
+  },
+  "claude_api": {
+    "uses_claude": true,
+    "preferred_env": "CLAUDE_CODE_OAUTH_TOKEN",
+    "fallback_env": "ANTHROPIC_API_KEY"
+  }
+}

@@ -1,0 +1,47 @@
+import type { Meta, StoryObj } from '@storybook/vue3';
+import { expect, userEvent, within } from '@storybook/test';
+import {{COMPONENT_NAME}} from './{{COMPONENT_NAME}}.vue';
+
+const meta = {
+  title: '{{STORY_TITLE}}',
+  component: {{COMPONENT_NAME}},
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+  argTypes: {
+    {{ARG_TYPES}}
+  },
+} satisfies Meta<typeof {{COMPONENT_NAME}}>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+{{VARIANT_STORIES}}
+
+// Interaction test
+export const WithInteraction: Story = {
+  args: {
+    {{DEFAULT_ARGS}}
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    {{INTERACTION_TEST_CODE}}
+  },
+};
+
+// Accessibility test
+export const AccessibilityValidation: Story = {
+  args: {
+    {{DEFAULT_ARGS}}
+  },
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {{A11Y_RULES}}
+        ],
+      },
+    },
+  },
+};
