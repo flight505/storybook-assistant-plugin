@@ -538,8 +538,9 @@ class ComponentAnalyzer:
             darker = min(l1, l2)
 
             return (lighter + 0.05) / (darker + 0.05)
-        except:
-            return 5.0  # Default to passing if calculation fails
+        except (ValueError, ZeroDivisionError, TypeError) as e:
+            # Color parsing or calculation failed, default to passing contrast
+            return 5.0
 
     def _generate_button_fixes(self, content: str, context: Dict) -> List[Dict]:
         """Generate fix suggestions for button accessible name"""

@@ -36,9 +36,9 @@ def generate_mockup(prompt: str, model: str, output_path: str) -> bool:
     # Load environment variables
     load_env()
 
-    api_key = os.getenv('OPENROUTER_API_KEY')
+    api_key = os.getenv('OPENROUTER_API_KEY', '').strip()
     if not api_key:
-        print("❌ OPENROUTER_API_KEY not found")
+        print("❌ OPENROUTER_API_KEY not found or empty")
         print("\nTo enable visual generation:")
         print("1. Get API key: https://openrouter.ai/keys")
         print("2. Add to .env: OPENROUTER_API_KEY=your_key_here")

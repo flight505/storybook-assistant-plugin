@@ -667,7 +667,8 @@ button:focus-visible {
             g = max(0, int(g * 0.7))
             b = max(0, int(b * 0.7))
             return f'#{r:02x}{g:02x}{b:02x}'
-        except:
+        except (ValueError, IndexError) as e:
+            # Color parsing failed, return safe default
             return '#666'
 
     def _lighten_color(self, color: str) -> str:
@@ -685,7 +686,8 @@ button:focus-visible {
             g = min(255, int(g + (255 - g) * 0.3))
             b = min(255, int(b + (255 - b) * 0.3))
             return f'#{r:02x}{g:02x}{b:02x}'
-        except:
+        except (ValueError, IndexError) as e:
+            # Color parsing failed, return safe default
             return '#f5f5f5'
 
 
