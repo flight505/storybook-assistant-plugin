@@ -1,14 +1,14 @@
 # 🎨 Storybook Assistant Plugin for Claude Code
 
 <div align="center">
-  <img src="assets/images/hero-banner-voxel.png" alt="Storybook Assistant Plugin - Voxel Space Citadel Command Center" width="100%">
+  <img src="assets/images/hero-banner-archive.png" alt="Storybook Assistant Plugin - Galactic Component Archive & Foundry" width="100%">
 </div>
 
 <br>
 
 **SOTA 2026 Storybook assistant with Vision AI design-to-code, natural language generation, AI-powered accessibility remediation, React Server Components, dark mode generation, and comprehensive testing (Storybook 9, React 19, Next.js 15).**
 
-[![Version](https://img.shields.io/badge/version-2.0.2-blue.svg)](https://github.com/flight505/storybook-assistant-plugin)
+[![Version](https://img.shields.io/badge/version-2.0.3-blue.svg)](https://github.com/flight505/storybook-assistant-plugin)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Storybook](https://img.shields.io/badge/Storybook-9.0+-FF4785.svg)](https://storybook.js.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)

@@ -1,6 +1,6 @@
 {
   "name": "storybook-assistant",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "SOTA 2026 Storybook assistant with Vision AI design-to-code, natural language generation, AI-powered accessibility remediation, React Server Components, dark mode generation, and comprehensive testing (Storybook 9, React 19, Next.js 15)",
   "author": {
     "name": "Jesper Vang",
