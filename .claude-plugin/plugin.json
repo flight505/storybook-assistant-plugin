@@ -1,21 +1,30 @@
 {
   "name": "storybook-assistant",
-  "version": "1.0.0",
-  "description": "Comprehensive Storybook 9 development assistant with visual generation, testing, and multi-platform support (Web, Tauri, Electron)",
+  "version": "2.0.0",
+  "description": "SOTA 2026 Storybook assistant with Vision AI design-to-code, natural language generation, AI-powered accessibility remediation, React Server Components, dark mode generation, and comprehensive testing (Storybook 9, React 19, Next.js 15)",
   "author": "flight505",
   "license": "MIT",
   "repository": "https://github.com/flight505/storybook-assistant-plugin",
   "keywords": [
     "storybook",
-    "component",
+    "storybook-9",
+    "react-19",
+    "nextjs-15",
+    "server-components",
+    "vision-ai",
+    "design-to-code",
+    "natural-language",
+    "ai-powered",
+    "accessibility",
+    "wcag",
+    "dark-mode",
+    "component-generation",
     "testing",
     "vitest",
     "playwright",
-    "accessibility",
     "tauri",
     "electron",
-    "visual-generation",
-    "ai"
+    "sota-2026"
   ],
   "skills": [
     {
@@ -45,12 +54,49 @@
     {
       "name": "style-guide-generator",
       "description": "Generate comprehensive design system documentation and style guides with visual assets"
+    },
+    {
+      "name": "accessibility-remediation",
+      "description": "AI-powered accessibility analysis and remediation with context-aware fix suggestions and one-click application for WCAG 2.2 compliance"
+    },
+    {
+      "name": "server-components",
+      "description": "Generate React Server Components with React 19 and Next.js 15 patterns including async/await, Suspense, Server Actions, and PPR"
+    },
+    {
+      "name": "natural-language-generation",
+      "description": "Generate production-ready components from natural language descriptions with TypeScript, props inference, stories, and tests"
+    },
+    {
+      "name": "design-to-code",
+      "description": "Transform design screenshots and mockups into pixel-perfect React components using Claude's vision AI with exact spacing, colors, and typography"
+    },
+    {
+      "name": "dark-mode-generation",
+      "description": "Automatically generate dark mode color schemes with intelligent color inversion, contrast preservation, and WCAG compliance"
+    },
+    {
+      "name": "performance-analysis",
+      "description": "Analyze component performance and bundle size with AI-powered optimization suggestions for imports, rendering, and code splitting"
+    },
+    {
+      "name": "ci-cd-generator",
+      "description": "Generate production-ready CI/CD pipelines for Storybook with GitHub Actions, Chromatic visual regression, and auto-deployment"
     }
+  ],
+  "agents": [
+    "accessibility-auditor",
+    "component-generator"
   ],
   "commands": [
     "/setup-storybook",
     "/generate-stories",
-    "/create-component"
+    "/create-component",
+    "/design-to-code",
+    "/generate-from-description",
+    "/fix-accessibility",
+    "/generate-dark-mode",
+    "/setup-ci-cd"
   ],
   "hooks": ["SessionStart"],
   "requirements": {
