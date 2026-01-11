@@ -1,6 +1,6 @@
 {
   "name": "storybook-assistant",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "SOTA 2026 Storybook assistant with Vision AI design-to-code, natural language generation, AI-powered accessibility remediation, React Server Components, dark mode generation, and comprehensive testing (Storybook 9, React 19, Next.js 15)",
   "author": {
     "name": "Jesper Vang",
@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "repository": "https://github.com/flight505/storybook-assistant-plugin",
+  "homepage": "https://github.com/flight505/storybook-assistant-plugin",
   "keywords": [
     "storybook",
     "storybook-9",
@@ -29,77 +30,26 @@
     "electron",
     "sota-2026"
   ],
+  "commands": "./commands",
   "skills": [
-    {
-      "name": "storybook-config",
-      "description": "Generate and configure Storybook 9 for your project with automatic framework detection and SOTA best practices"
-    },
-    {
-      "name": "story-generation",
-      "description": "Generate story files for existing components with interaction tests, accessibility checks, and multiple variants"
-    },
-    {
-      "name": "component-scaffold",
-      "description": "Scaffold new components with stories, tests, and documentation following SOTA patterns and best practices"
-    },
-    {
-      "name": "visual-design",
-      "description": "Generate style guides, component mockups, and visual assets using AI (optional - requires OPENROUTER_API_KEY)"
-    },
-    {
-      "name": "testing-suite",
-      "description": "Set up and generate comprehensive tests: interaction (play functions), accessibility (a11y), and visual regression"
-    },
-    {
-      "name": "platform-support",
-      "description": "Platform-specific guidance and setup for Tauri (full support) and Electron (partial support with architectural patterns)"
-    },
-    {
-      "name": "style-guide-generator",
-      "description": "Generate comprehensive design system documentation and style guides with visual assets"
-    },
-    {
-      "name": "accessibility-remediation",
-      "description": "AI-powered accessibility analysis and remediation with context-aware fix suggestions and one-click application for WCAG 2.2 compliance"
-    },
-    {
-      "name": "server-components",
-      "description": "Generate React Server Components with React 19 and Next.js 15 patterns including async/await, Suspense, Server Actions, and PPR"
-    },
-    {
-      "name": "natural-language-generation",
-      "description": "Generate production-ready components from natural language descriptions with TypeScript, props inference, stories, and tests"
-    },
-    {
-      "name": "design-to-code",
-      "description": "Transform design screenshots and mockups into pixel-perfect React components using Claude's vision AI with exact spacing, colors, and typography"
-    },
-    {
-      "name": "dark-mode-generation",
-      "description": "Automatically generate dark mode color schemes with intelligent color inversion, contrast preservation, and WCAG compliance"
-    },
-    {
-      "name": "performance-analysis",
-      "description": "Analyze component performance and bundle size with AI-powered optimization suggestions for imports, rendering, and code splitting"
-    },
-    {
-      "name": "ci-cd-generator",
-      "description": "Generate production-ready CI/CD pipelines for Storybook with GitHub Actions, Chromatic visual regression, and auto-deployment"
-    }
+    "./skills/storybook-config",
+    "./skills/story-generation",
+    "./skills/component-scaffold",
+    "./skills/visual-design",
+    "./skills/testing-suite",
+    "./skills/platform-support",
+    "./skills/style-guide-generator",
+    "./skills/accessibility-remediation",
+    "./skills/server-components",
+    "./skills/natural-language-generation",
+    "./skills/design-to-code",
+    "./skills/dark-mode-generation",
+    "./skills/performance-analysis",
+    "./skills/ci-cd-generator"
   ],
   "agents": [
-    "accessibility-auditor",
-    "component-generator"
-  ],
-  "commands": [
-    "/setup-storybook",
-    "/generate-stories",
-    "/create-component",
-    "/design-to-code",
-    "/generate-from-description",
-    "/fix-accessibility",
-    "/generate-dark-mode",
-    "/setup-ci-cd"
+    "./agents/accessibility-auditor.md",
+    "./agents/component-generator.md"
   ],
   "hooks": ["SessionStart"],
   "requirements": {

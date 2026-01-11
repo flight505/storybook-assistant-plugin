@@ -2,7 +2,7 @@
   "name": "storybook-assistant",
   "metadata": {
     "description": "SOTA 2026 Storybook assistant with Vision AI design-to-code, natural language generation, AI-powered accessibility remediation, React Server Components, dark mode generation, and comprehensive testing",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "homepage": "https://github.com/flight505/storybook-assistant-plugin"
   },
   "owner": {
