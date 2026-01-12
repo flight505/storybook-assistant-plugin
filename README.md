@@ -16,6 +16,10 @@
 
 ---
 
+> **🚀 First time here?** Jump to [How to Use](#-how-to-use-after-installation) to get started, or type `/help` in Claude Code to see all available features!
+
+---
+
 ## ✨ Features
 
 ### 🚀 **Auto-Configured Storybook 9**
@@ -91,22 +95,90 @@ claude --plugin-dir ./storybook-assistant-plugin
 ```
 
 **Verify installation:**
-Plugin will automatically check environment on SessionStart
+Plugin will automatically check environment on SessionStart and display available features.
 
-### Usage
+---
 
+## 💡 How to Use After Installation
+
+Once installed, the plugin is available in your Claude Code CLI sessions:
+
+### 1. **Start Claude Code** in your project directory
 ```bash
-# 1. Initialize Storybook in your project
+cd your-project
+claude
+```
+
+### 2. **Discover Features** (New in v2.1.0!)
+```bash
+# Ask what the plugin can do
+"What can you do?"
+"Show me available features"
+
+# Or use the help command
+/help
+```
+
+### 3. **Use Commands** - Type any command starting with `/`
+```bash
+# Initialize Storybook in your project
 /setup-storybook
 
-# 2. Generate stories for existing components
+# Generate stories for existing components
 /generate-stories
 
-# 3. Create new component with story and tests
+# Create new component with story and tests
 /create-component
+```
 
-# 4. Migrate from older Storybook versions
-/migrate-storybook
+### 4. **Or Use Natural Language**
+```bash
+"Set up Storybook in this Next.js project"
+"Generate stories for my Button component"
+"Create a new Card component with dark mode support"
+"Fix accessibility issues in LoginForm.tsx"
+```
+
+The plugin understands natural language and will automatically trigger the right skills!
+
+---
+
+## 📋 Quick Reference
+
+### Essential Commands
+
+| Command | Description |
+|---------|-------------|
+| `/help` | Show all features and commands |
+| `/setup-storybook` | Initialize Storybook 9 in your project |
+| `/generate-stories` | Generate stories for existing components |
+| `/create-component` | Scaffold new component with stories |
+| `/design-to-code` | Transform design screenshots to React components |
+| `/fix-accessibility` | AI-powered WCAG 2.2 accessibility fixes |
+| `/generate-dark-mode` | Auto-generate dark mode color schemes |
+| `/setup-visual-testing` | Configure AI visual regression testing |
+| `/sync-design-tokens` | Sync design tokens between Figma and code |
+| `/analyze-usage` | Analyze component usage across codebase |
+
+### Example Workflow
+
+```bash
+# 1. Start Claude in your project
+cd my-react-app
+claude
+
+# 2. See what's available
+/help
+
+# 3. Set up Storybook
+/setup-storybook
+
+# 4. Generate stories for components
+/generate-stories
+
+# 5. Or create something new
+/create-component
+# Then follow the interactive prompts!
 ```
 
 ---
