@@ -73,21 +73,5 @@
     "./commands/sync-design-tokens.md",
     "./commands/analyze-usage.md"
   ],
-  "hooks": ["SessionStart"],
-  "requirements": {
-    "node": ">=20.0.0",
-    "npm": ">=10.0.0"
-  },
-  "optional_dependencies": {
-    "openrouter": {
-      "env_var": "OPENROUTER_API_KEY",
-      "purpose": "AI-powered visual generation (style guides, mockups, diagrams)",
-      "required": false
-    }
-  },
-  "claude_api": {
-    "uses_claude": true,
-    "preferred_env": "CLAUDE_CODE_OAUTH_TOKEN",
-    "fallback_env": "ANTHROPIC_API_KEY"
-  }
+  "hooks": "./.claude-plugin/hooks.json"
 }
