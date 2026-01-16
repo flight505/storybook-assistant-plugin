@@ -55,7 +55,10 @@ jobs:
           echo "📦 Triggering marketplace update for $PLUGIN_NAME"
           echo "   Version: $PREVIOUS_VERSION → $CURRENT_VERSION"
 
-          curl -X POST \
+          # Capture HTTP response code
+          HTTP_CODE=$(curl -X POST \
+            -w "%{http_code}" \
+            -o /tmp/response.json \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.MARKETPLACE_UPDATE_TOKEN }}" \
             https://api.github.com/repos/flight505/flight505-marketplace/dispatches \
@@ -68,12 +71,15 @@ jobs:
                 \"commit\": \"$GITHUB_SHA\",
                 \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
               }
-            }"
+            }")
 
-          if [ $? -eq 0 ]; then
-            echo "✅ Marketplace notification sent successfully"
+          # Check HTTP response code (204 = success for repository_dispatch)
+          if [ "$HTTP_CODE" = "204" ]; then
+            echo "✅ Marketplace notification sent successfully (HTTP $HTTP_CODE)"
           else
-            echo "❌ Failed to notify marketplace"
+            echo "❌ Failed to notify marketplace (HTTP $HTTP_CODE)"
+            echo "Response:"
+            cat /tmp/response.json || echo "No response body"
             exit 1
           fi
 
