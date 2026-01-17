@@ -35,74 +35,100 @@ This provides:
 
 ### Step 2: Ask User for Component Details
 
-Use AskUserQuestion to gather component requirements:
+Use AskUserQuestion with serial questions to gather component requirements:
+
+**Round 1: Component Category**
 
 ```javascript
 AskUserQuestion({
   questions: [
     {
-      question: "What type of component are you creating?",
-      header: "Component Type",
+      question: "What category of component are you creating?",
+      header: "Category",
+      multiSelect: false,
+      options: [
+        {
+          label: "Form Control",
+          description: "Interactive elements like buttons, inputs, checkboxes"
+        },
+        {
+          label: "Layout",
+          description: "Containers, cards, grids, modals for structuring content"
+        },
+        {
+          label: "Data Display",
+          description: "Tables, lists, data grids for showing information"
+        },
+        {
+          label: "Navigation",
+          description: "Menus, tabs, breadcrumbs for site navigation"
+        }
+      ]
+    }
+  ]
+})
+```
+
+**Round 2: Specific Component Type (Conditional)**
+
+After receiving the category answer, ask for specific type. The pattern is:
+1. Ask category-specific component type question (4 options)
+2. Follow with name, testing, and mockup questions (same for all categories)
+
+**Pattern Example (Form Control):**
+
+```javascript
+AskUserQuestion({
+  questions: [
+    // Question 1: Component type (category-specific)
+    {
+      question: "Which form control component?",
+      header: "Type",
       multiSelect: false,
       options: [
         {
           label: "Button",
-          description: "Interactive button with variants (primary, secondary, etc.)"
+          description: "Action button with variants (primary, secondary, etc.)"
         },
         {
           label: "Input",
-          description: "Form input with validation and states"
+          description: "Text input field with validation and states"
         },
         {
-          label: "Card",
-          description: "Content container with optional header, footer, image"
+          label: "Checkbox",
+          description: "Toggle control for boolean options"
         },
         {
-          label: "Modal / Dialog",
-          description: "Overlay dialog with backdrop and focus management"
-        },
-        {
-          label: "Table / DataGrid",
-          description: "Data table with sorting, filtering, pagination"
-        },
-        {
-          label: "Form",
-          description: "Form layout with validation and submission"
-        },
-        {
-          label: "Navigation (Menu/Tabs)",
-          description: "Navigation component with routing"
-        },
-        {
-          label: "Layout (Container/Grid)",
-          description: "Layout component for page structure"
-        },
-        {
-          label: "Custom",
-          description: "Generic component (will ask for props)"
+          label: "Select",
+          description: "Dropdown menu for selecting from options"
         }
       ]
     },
+    // Question 2: Component name (same for all categories)
     {
-      question: "What should the component be named? (PascalCase, e.g., 'MyButton')",
-      header: "Component Name",
+      question: "What should the component be named? (Use PascalCase)",
+      header: "Name",
       multiSelect: false,
       options: [
-        // This will be a text input via "Other" option
         {
-          label: "Enter custom name",
-          description: "Use PascalCase (e.g., MyButton, UserCard, DataTable)"
+          label: "MyButton",
+          description: "Example name - you can type your own via 'Other'"
+        },
+        {
+          label: "UserCard",
+          description: "Example name - you can type your own via 'Other'"
         }
       ]
     },
+    // Question 3: Testing level (same for all categories)
     {
       question: "What level of testing should I include?",
-      header: "Testing Level",
+      header: "Test Level",
       multiSelect: false,
       options: [
         {
-          label: "Full Testing (Recommended)",
-          description: "Component + Story + Interaction tests + A11y tests"
+          label: "Full Testing",
+          description: "Recommended: Component + Story + Interaction tests + A11y tests"
         },
         {
           label: "Standard Testing",
@@ -118,17 +144,18 @@ AskUserQuestion({
         }
       ]
     },
+    // Question 4: Visual mockup (same for all categories)
     {
       question: "Should I generate a visual mockup for design reference?",
-      header: "Visual Mockup",
+      header: "Mockup",
       multiSelect: false,
       options: [
         {
-          label: "Yes - Generate AI mockup (Recommended)",
-          description: "Creates visual reference using NanoBanana (requires OPENROUTER_API_KEY)"
+          label: "Yes",
+          description: "Recommended: Creates AI mockup (requires OPENROUTER_API_KEY)"
         },
         {
-          label: "No - Skip mockup",
+          label: "No",
           description: "Generate component files only"
         }
       ]
@@ -137,19 +164,65 @@ AskUserQuestion({
 })
 ```
 
+**Other Category Options (Question 1 varies by category):**
+
+```javascript
+// Layout category options:
+{
+  question: "Which layout component?",
+  header: "Type",
+  options: [
+    { label: "Card", description: "Content container with optional header and footer" },
+    { label: "Modal", description: "Overlay dialog with backdrop and focus management" },
+    { label: "Container", description: "Layout wrapper with max-width and padding" },
+    { label: "Grid", description: "Responsive grid system for complex layouts" }
+  ]
+}
+
+// Data Display category options:
+{
+  question: "Which data display component?",
+  header: "Type",
+  options: [
+    { label: "Table", description: "Data table with sorting, filtering, pagination" },
+    { label: "List", description: "Vertical list with optional icons and actions" },
+    { label: "DataGrid", description: "Advanced table with inline editing and grouping" },
+    { label: "Chart", description: "Data visualization component (requires chart library)" }
+  ]
+}
+
+// Navigation category options:
+{
+  question: "Which navigation component?",
+  header: "Type",
+  options: [
+    { label: "Menu", description: "Dropdown or sidebar menu with nested items" },
+    { label: "Tabs", description: "Horizontal or vertical tab navigation" },
+    { label: "Breadcrumb", description: "Page location breadcrumb trail" },
+    { label: "Navbar", description: "Top navigation bar with logo and links" }
+  ]
+}
+```
+
+**Note:** Questions 2-4 (Name, Testing, Mockup) are identical across all categories. Only Question 1 (component type) varies based on the category selected in Round 1.
+
 ### Step 3: Process User Input
 
-After receiving answers, process and prepare for generation:
+After receiving answers from both rounds, process and prepare for generation:
 
 ```python
 import json
 import os
 
-# Extract answers
-component_type = answers['Component Type']
-component_name_raw = answers['Component Name']
-testing_level_raw = answers['Testing Level']
-generate_mockup_raw = answers['Visual Mockup']
+# Extract answers from Round 1 (Category)
+component_category = answers_round1['What category of component are you creating?']
+
+# Extract answers from Round 2 (Type and preferences)
+# Question text varies by category, use the actual question text as key
+component_type = answers_round2['Which form control component?']  # Or 'Which layout component?', etc.
+component_name_raw = answers_round2['What should the component be named? (Use PascalCase)']
+testing_level_raw = answers_round2['What level of testing should I include?']
+generate_mockup_raw = answers_round2['Should I generate a visual mockup for design reference?']
 
 # Clean component name (from "Other" text input)
 component_name = component_name_raw.strip()
@@ -160,7 +233,7 @@ if not component_name[0].isupper():
 
 # Map testing level
 testing_level_map = {
-    "Full Testing (Recommended)": "full",
+    "Full Testing": "full",
     "Standard Testing": "standard",
     "Basic": "basic",
     "Minimal": "minimal"

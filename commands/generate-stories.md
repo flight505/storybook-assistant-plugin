@@ -77,12 +77,12 @@ AskUserQuestion({
     },
     {
       question: "What level of testing should I include in the stories?",
-      header: "Testing Level",
+      header: "Test Level",
       multiSelect: false,
       options: [
         {
-          label: "Full Testing (Recommended)",
-          description: "Interaction tests, accessibility tests, multiple variants, and edge cases"
+          label: "Full Testing",
+          description: "Recommended: Interaction tests, accessibility tests, multiple variants, and edge cases"
         },
         {
           label: "Standard Testing",
@@ -99,16 +99,16 @@ AskUserQuestion({
       ]
     },
     {
-      question: "Should I generate visual mockups for complex components? (requires OPENROUTER_API_KEY)",
-      header: "Visual Mockups",
+      question: "Should I generate visual mockups for complex components?",
+      header: "Mockups",
       multiSelect: false,
       options: [
         {
-          label: "Yes - Generate mockups for Card, Modal, Table, etc.",
-          description: "AI-generated visual references using NanoBanana (Gemini 3 Pro Image)"
+          label: "Yes",
+          description: "Recommended: Generate mockups for Card, Modal, Table (requires OPENROUTER_API_KEY)"
         },
         {
-          label: "No - Skip visual generation",
+          label: "No",
           description: "Generate stories only"
         }
       ]

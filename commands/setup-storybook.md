@@ -47,12 +47,12 @@ AskUserQuestion({
     multiSelect: true,
     options: [
       {
-        label: "Interaction Tests (Recommended)",
-        description: "Test user interactions with play functions powered by Vitest + Playwright"
+        label: "Interaction Tests",
+        description: "Recommended: Test user interactions with play functions powered by Vitest + Playwright"
       },
       {
-        label: "Accessibility Tests (Recommended)",
-        description: "WCAG compliance testing with axe-core (catches 57% of issues automatically)"
+        label: "Accessibility Tests",
+        description: "Recommended: WCAG compliance testing with axe-core (catches 57% of issues automatically)"
       },
       {
         label: "Visual Regression Tests",
@@ -80,8 +80,8 @@ AskUserQuestion({
     multiSelect: false,
     options: [
       {
-        label: `Import ${DESIGN_SYSTEM} theme globally (Recommended)`,
-        description: `Apply your existing ${DESIGN_SYSTEM} theme to all stories automatically`
+        label: `Import ${DESIGN_SYSTEM} theme globally`,
+        description: `Recommended: Apply your existing ${DESIGN_SYSTEM} theme to all stories automatically`
       },
       {
         label: "Per-story theme control",
@@ -130,8 +130,8 @@ AskUserQuestion({
     multiSelect: false,
     options: [
       {
-        label: "Generate IPC mock utilities (Recommended)",
-        description: "Create window.api mock helpers for testing components in isolation"
+        label: "Generate IPC mock utilities",
+        description: "Recommended: Create window.api mock helpers for testing components in isolation"
       },
       {
         label: "I'll mock IPC manually",
@@ -161,8 +161,8 @@ AskUserQuestion({
     multiSelect: false,
     options: [
       {
-        label: "Yes (Recommended)",
-        description: "Generate window.api mock utilities and architectural guidance"
+        label: "Yes",
+        description: "Recommended: Generate window.api mock utilities and architectural guidance"
       },
       {
         label: "No",
@@ -185,8 +185,8 @@ if (OPENROUTER_API_KEY_AVAILABLE) {
       multiSelect: false,
       options: [
         {
-          label: "Yes - Generate style guide (Recommended)",
-          description: "AI-generated style guide with colors, typography, spacing, and component examples"
+          label: "Yes - Generate style guide",
+          description: "Recommended: AI-generated style guide with colors, typography, spacing, and component examples"
         },
         {
           label: "Yes - Generate mockup examples only",
