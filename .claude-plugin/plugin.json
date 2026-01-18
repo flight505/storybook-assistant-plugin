@@ -73,5 +73,19 @@
     "./commands/sync-design-tokens.md",
     "./commands/analyze-usage.md"
   ],
-  "hooks": "./.claude-plugin/hooks.json"
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-environment.sh",
+            "timeout": 30,
+            "description": "Check environment: Node.js, npm, API keys (CLAUDE_CODE_OAUTH_TOKEN > ANTHROPIC_API_KEY, optional OPENROUTER_API_KEY)"
+          }
+        ]
+      }
+    ]
+  }
 }
