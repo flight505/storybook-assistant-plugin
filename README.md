@@ -8,7 +8,7 @@
 
 **Complete SOTA 2026 Storybook assistant with Vision AI design-to-code, natural language generation, AI-powered accessibility remediation, React Server Components, AI visual regression testing, design token sync, usage analytics, dark mode generation, and comprehensive testing (Storybook 9, React 19, Next.js 15).**
 
-[![Version](https://img.shields.io/badge/version-2.1.3-blue.svg)](https://github.com/flight505/storybook-assistant-plugin)
+[![Version](https://img.shields.io/badge/version-2.1.4-blue.svg)](https://github.com/flight505/storybook-assistant-plugin)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Storybook](https://img.shields.io/badge/Storybook-9.0+-FF4785.svg)](https://storybook.js.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
@@ -16,7 +16,7 @@
 
 ---
 
-> **🚀 First time here?** Jump to [How to Use](#-how-to-use-after-installation) to get started, or type `/help` in Claude Code to see all available features!
+> **🚀 First time here?** Start with the [ELI5 section](#-eli5-what-does-this-plugin-do) for a quick overview, then check [How to Use](#-how-to-use-after-installation) to get started, or type `/help` in Claude Code to see all available features!
 
 ---
 
@@ -180,6 +180,238 @@ claude
 /create-component
 # Then follow the interactive prompts!
 ```
+
+---
+
+## 🎓 ELI5: What Does This Plugin Do?
+
+**Imagine you're building a house (your app), and you need to organize all your building blocks (components) in one place where you can see them, test them, and make sure they work.**
+
+That's what Storybook does—it's like a **workshop for your UI components**.
+
+### The Problem
+
+When building apps, developers create lots of UI pieces (buttons, cards, forms). It's hard to:
+- See all components in one place
+- Test them without running the whole app
+- Check if they work on different screen sizes
+- Make sure they're accessible for everyone
+- Document how they should be used
+
+### What This Plugin Does
+
+**This plugin is your AI assistant that:**
+
+1. **Sets up the workshop** - Installs Storybook 9 with all the right tools
+2. **Organizes your components** - Creates "stories" (examples) for each component
+3. **Tests everything** - Checks if buttons click, forms submit, colors contrast properly
+4. **Guides you visually** - Can generate mockups to show what components should look like
+5. **Asks smart questions** - Instead of typing commands, you click menu options
+
+### The Magic Part: No Typing Required
+
+**Before (traditional way):**
+```bash
+npm install storybook
+npx storybook init
+# Answer 10 questions by typing
+# Edit 5 config files manually
+# Create example stories
+# Install testing addons
+# Configure webpack/vite
+```
+
+**After (with this plugin):**
+```bash
+claude
+/setup-storybook
+# Click your choices from menus
+# Everything is done for you
+```
+
+The plugin **detects your project automatically** (React? Vue? Next.js?), **asks what you want** (testing? dark mode? visual mockups?), and **sets everything up perfectly**.
+
+---
+
+## 🏗️ How It Actually Works (Technical Architecture)
+
+<div align="center">
+  <img src="assets/images/plugin-architecture.png" alt="Plugin Architecture Diagram" width="100%">
+</div>
+
+### Architecture Overview
+
+The Storybook Assistant plugin has **4 core component types** that work together:
+
+#### 1. **Skills (18 total)** - Natural Language Triggers
+
+**What they are:** Knowledge modules that activate when you use specific keywords in conversation.
+
+**How they work:**
+- You say: *"Help me set up visual regression testing"*
+- Plugin detects keywords: "visual regression"
+- Loads the `visual-regression-testing` skill
+- Provides specialized knowledge and guidance
+
+**Examples:**
+- `visual-design` - Activates on: "generate mockup", "style guide", "design system"
+- `component-scaffold` - Activates on: "create component", "new component"
+- `accessibility-remediation` - Activates on: "fix accessibility", "a11y issues"
+
+**Think of skills as:** Auto-loading expert consultants who appear when their expertise is needed.
+
+#### 2. **Commands (12 total)** - Explicit Actions
+
+**What they are:** Slash commands (`/command-name`) that perform specific tasks.
+
+**How they work:**
+- You type: `/setup-storybook`
+- Plugin executes the command script
+- Uses `AskUserQuestion` to create interactive menus
+- Performs the action with your choices
+
+**Examples:**
+```bash
+/setup-storybook      # Initialize Storybook
+/generate-stories     # Generate stories for components
+/create-component     # Scaffold new component
+/fix-accessibility    # Run accessibility audits
+```
+
+**Think of commands as:** Direct action buttons with interactive wizards.
+
+#### 3. **Agents (3 total)** - Autonomous Workers
+
+**What they are:** Specialized AI agents that work autonomously on complex tasks.
+
+**How they work:**
+- Triggered automatically or manually
+- Have their own system prompts and tool access
+- Work in the background while you continue
+- Report results when complete
+
+**Examples:**
+- `accessibility-auditor` - Scans codebase, finds a11y issues, generates fixes
+- `component-generator` - Analyzes designs, generates React components
+- `visual-regression-analyzer` - Compares screenshots, detects UI changes
+
+**Think of agents as:** Automated specialists who handle complex multi-step tasks.
+
+#### 4. **Hooks (SessionStart)** - Automatic Setup
+
+**What they are:** Scripts that run automatically on specific events.
+
+**How they work:**
+- Runs when Claude Code starts in your project
+- Checks environment (Node.js version, npm, API keys)
+- Displays what features are available
+- No user action required
+
+**Example output:**
+```
+✅ Environment Check:
+  ✓ Node.js v25.3.0 (>= 20.0.0)
+  ✓ pnpm 10.28.0
+  ✓ CLAUDE_CODE_OAUTH_TOKEN found
+  ⚠ OPENROUTER_API_KEY not found (visual generation disabled)
+```
+
+**Think of hooks as:** Pre-flight checks that run before takeoff.
+
+---
+
+## 🎯 The Interactive Menu System (AskUserQuestion)
+
+### What It Is
+
+Instead of making you type answers or edit config files, the plugin creates **interactive menus** where you click your choices.
+
+### How It Works
+
+**Behind the scenes:**
+```typescript
+// Plugin code (simplified)
+AskUserQuestion({
+  questions: [{
+    question: "Which framework detected?",
+    header: "Framework",
+    options: [
+      { label: "React 19", description: "Modern React with hooks" },
+      { label: "Vue 3", description: "Composition API" },
+      { label: "Svelte 5", description: "With Runes" }
+    ]
+  }]
+})
+```
+
+**What you see:**
+```
+? Which framework detected? (Framework)
+  ❯ React 19 - Modern React with hooks
+    Vue 3 - Composition API
+    Svelte 5 - With Runes
+```
+
+### Real-World Example: `/setup-storybook`
+
+**The Flow:**
+
+1. **Framework Detection** (automatic)
+   - Plugin scans `package.json`
+   - Detects: "React 19 with Next.js 15"
+
+2. **Platform Detection** (automatic)
+   - Checks for `tauri.conf.json` or `electron-builder.yml`
+   - Detects: "Tauri application"
+
+3. **Design System Detection** (automatic)
+   - Scans dependencies for MUI, Ant Design, shadcn/ui
+   - Detects: "shadcn/ui"
+
+4. **User Preferences** (interactive menu)
+   ```
+   ? What testing features do you want?
+     ❯ Full Testing (Recommended) - Interaction + A11y + Coverage
+       Basic Testing - Interaction tests only
+       No Testing - Stories only
+
+   ? Enable visual generation features?
+     ❯ Yes - Generate style guides and mockups (requires API key)
+       No - Skip visual generation
+   ```
+
+5. **Execution** (automatic)
+   - Installs Storybook 9 + selected addons
+   - Generates config files with your choices
+   - Creates platform-specific mocks (Tauri IPC mocks)
+   - Creates example stories
+   - Sets up testing framework
+
+6. **Result**
+   ```
+   ✅ Storybook 9 Setup Complete!
+
+   Configured for: React 19 (Next.js 15, Tauri)
+   Design System: shadcn/ui
+   Testing: Full (Vitest + Playwright + axe-core)
+
+   Next: npm run storybook
+   ```
+
+### Why This Matters
+
+**Traditional approach** (other tools):
+- Read 20 pages of documentation
+- Answer questions by typing exact strings
+- Edit 5 config files manually
+- Install dependencies one by one
+- Debug when something breaks
+
+**This plugin**:
+- Automatic detection
+- Click your preferences
+- Everything configured correctly
+- Just works™
 
 ---
 
@@ -578,6 +810,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 - [Playwright](https://playwright.dev/) - Reliable browser automation
 - [OpenRouter](https://openrouter.ai/) - AI model access
 - [Claude Code](https://claude.ai/code) - AI-powered development environment
+- [Gemini 3 Pro Image](https://deepmind.google/technologies/gemini/) - Architecture diagram generation (via NanoBanana plugin)
 
 ---
 
