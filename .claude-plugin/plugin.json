@@ -1,6 +1,6 @@
 {
   "name": "storybook-assistant",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Complete SOTA 2026 Storybook assistant with Vision AI design-to-code, natural language generation, AI-powered accessibility remediation, React Server Components, AI visual regression testing, design token sync, usage analytics, dark mode generation, and comprehensive testing (Storybook 9, React 19, Next.js 15)",
   "author": {
     "name": "Jesper Vang",
@@ -35,29 +35,29 @@
     "sota-2026"
   ],
   "skills": [
-    "storybook-config",
-    "story-generation",
-    "component-scaffold",
-    "visual-design",
-    "testing-suite",
-    "platform-support",
-    "style-guide-generator",
-    "accessibility-remediation",
-    "server-components",
-    "natural-language-generation",
-    "design-to-code",
-    "dark-mode-generation",
-    "performance-analysis",
-    "ci-cd-generator",
-    "visual-regression-testing",
-    "design-token-sync",
-    "component-usage-analytics",
-    "plugin-guide"
+    "./skills/storybook-config",
+    "./skills/story-generation",
+    "./skills/component-scaffold",
+    "./skills/visual-design",
+    "./skills/testing-suite",
+    "./skills/platform-support",
+    "./skills/style-guide-generator",
+    "./skills/accessibility-remediation",
+    "./skills/server-components",
+    "./skills/natural-language-generation",
+    "./skills/design-to-code",
+    "./skills/dark-mode-generation",
+    "./skills/performance-analysis",
+    "./skills/ci-cd-generator",
+    "./skills/visual-regression-testing",
+    "./skills/design-token-sync",
+    "./skills/component-usage-analytics",
+    "./skills/plugin-guide"
   ],
   "agents": [
-    "accessibility-auditor",
-    "component-generator",
-    "visual-regression-analyzer"
+    "./agents/accessibility-auditor.md",
+    "./agents/component-generator.md",
+    "./agents/visual-regression-analyzer.md"
   ],
   "commands": [
     "./commands/help.md",
