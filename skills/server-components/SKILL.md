@@ -268,7 +268,7 @@ export function {{COMPONENT_NAME}}({
 import type { Meta, StoryObj } from '@storybook/react';
 import ProductList from './ProductList';
 
-const meta: Meta<typeof ProductList> = {
+const meta = {
   title: 'Server/ProductList',
   component: ProductList,
   parameters: {
@@ -276,10 +276,10 @@ const meta: Meta<typeof ProductList> = {
       appDirectory: true,  // Enable App Router
     },
   },
-};
+} satisfies Meta<typeof ProductList>;
 
 export default meta;
-type Story = StoryObj<typeof ProductList>;
+type Story = StoryObj<typeof meta>;
 
 // ✨ Mock server data
 export const Default: Story = {

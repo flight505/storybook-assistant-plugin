@@ -3,43 +3,43 @@
 Component scanner for finding all components in a project
 """
 
-import os
 import json
 from pathlib import Path
 from typing import List, Dict, Any
 from parse_component import parse_component
+
 
 class ComponentScanner:
     """Scan project for components"""
 
     # Default patterns to exclude
     EXCLUDE_PATTERNS = [
-        'node_modules',
-        '.git',
-        'dist',
-        'build',
-        'coverage',
-        '.next',
-        '.nuxt',
-        '.storybook',
-        '__pycache__',
-        '.pytest_cache',
-        'test',
-        'tests',
-        '__tests__',
-        '*.test.*',
-        '*.spec.*',
-        '*.stories.*',
+        "node_modules",
+        ".git",
+        "dist",
+        "build",
+        "coverage",
+        ".next",
+        ".nuxt",
+        ".storybook",
+        "__pycache__",
+        ".pytest_cache",
+        "test",
+        "tests",
+        "__tests__",
+        "*.test.*",
+        "*.spec.*",
+        "*.stories.*",
     ]
 
     # Component file extensions
-    COMPONENT_EXTENSIONS = ['.tsx', '.jsx', '.vue', '.svelte', '.ts', '.js']
+    COMPONENT_EXTENSIONS = [".tsx", ".jsx", ".vue", ".svelte", ".ts", ".js"]
 
     @staticmethod
     def scan(
         root_dir: str,
         include_patterns: List[str] = None,
-        exclude_patterns: List[str] = None
+        exclude_patterns: List[str] = None,
     ) -> List[Dict[str, Any]]:
         """
         Scan directory for components
@@ -68,7 +68,7 @@ class ComponentScanner:
         component_files = []
 
         for ext in ComponentScanner.COMPONENT_EXTENSIONS:
-            for file_path in root_path.rglob(f'*{ext}'):
+            for file_path in root_path.rglob(f"*{ext}"):
                 # Skip excluded patterns
                 if ComponentScanner._should_exclude(file_path, exclude):
                     continue
@@ -87,20 +87,20 @@ class ComponentScanner:
                 if metadata:
                     # Convert to dict
                     component_dict = {
-                        'name': metadata.name,
-                        'file_path': str(file_path.relative_to(root_path)),
-                        'framework': metadata.framework,
-                        'component_type': metadata.component_type,
-                        'props_count': len(metadata.props),
-                        'has_children': metadata.has_children,
-                        'props': [
+                        "name": metadata.name,
+                        "file_path": str(file_path.relative_to(root_path)),
+                        "framework": metadata.framework,
+                        "component_type": metadata.component_type,
+                        "props_count": len(metadata.props),
+                        "has_children": metadata.has_children,
+                        "props": [
                             {
-                                'name': p.name,
-                                'type': p.type,
-                                'required': p.required,
+                                "name": p.name,
+                                "type": p.type,
+                                "required": p.required,
                             }
                             for p in metadata.props
-                        ]
+                        ],
                     }
                     components.append(component_dict)
             except Exception as e:
@@ -121,9 +121,10 @@ class ComponentScanner:
                 return True
 
             # Wildcard pattern
-            if '*' in pattern:
+            if "*" in pattern:
                 import fnmatch
-                if fnmatch.fnmatch(file_str, f'*{pattern}'):
+
+                if fnmatch.fnmatch(file_str, f"*{pattern}"):
                     return True
 
         return False
@@ -142,46 +143,36 @@ class ComponentScanner:
             return True
 
         # Or are in a components directory
-        if 'component' in str(file_path).lower():
+        if "component" in str(file_path).lower():
             return True
 
         # Or are named index (for directory-based components)
-        if filename.lower() == 'index':
+        if filename.lower() == "index":
             return True
 
         return False
+
 
 def main():
     """CLI interface"""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description='Scan project for components'
-    )
+    parser = argparse.ArgumentParser(description="Scan project for components")
     parser.add_argument(
-        'root_dir',
-        nargs='?',
-        default='.',
-        help='Root directory to scan (default: current directory)'
+        "root_dir",
+        nargs="?",
+        default=".",
+        help="Root directory to scan (default: current directory)",
     )
+    parser.add_argument("--json", action="store_true", help="Output as JSON")
     parser.add_argument(
-        '--json',
-        action='store_true',
-        help='Output as JSON'
-    )
-    parser.add_argument(
-        '--exclude',
-        action='append',
-        help='Additional patterns to exclude'
+        "--exclude", action="append", help="Additional patterns to exclude"
     )
 
     args = parser.parse_args()
 
     # Scan for components
-    components = ComponentScanner.scan(
-        args.root_dir,
-        exclude_patterns=args.exclude
-    )
+    components = ComponentScanner.scan(args.root_dir, exclude_patterns=args.exclude)
 
     if args.json:
         print(json.dumps(components, indent=2))
@@ -191,17 +182,18 @@ def main():
         # Group by framework
         by_framework = {}
         for comp in components:
-            framework = comp['framework']
+            framework = comp["framework"]
             if framework not in by_framework:
                 by_framework[framework] = []
             by_framework[framework].append(comp)
 
         for framework, comps in sorted(by_framework.items()):
             print(f"\n{framework.upper()}:")
-            for comp in sorted(comps, key=lambda c: c['name']):
+            for comp in sorted(comps, key=lambda c: c["name"]):
                 print(f"  • {comp['name']}")
                 print(f"    {comp['file_path']}")
                 print(f"    {comp['props_count']} props • {comp['component_type']}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

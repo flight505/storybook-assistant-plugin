@@ -141,6 +141,71 @@ Add to `package.json`:
 }
 ```
 
+### Portable Stories
+
+Run stories directly in unit tests (Vitest/Jest) - perfect for reusable component libraries.
+
+**Why use it:**
+- Reuse stories as test cases (no duplication)
+- Args, decorators, play functions work automatically
+- Test outside Storybook in CI pipelines
+- Share components across projects with tests included
+
+**Setup:**
+```typescript
+// Button.test.tsx
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
+import * as stories from './Button.stories';
+
+// Convert all stories to testable components
+const { Primary, Disabled, WithIcon } = composeStories(stories);
+
+describe('Button', () => {
+  it('renders primary variant', () => {
+    render(<Primary />);
+    expect(screen.getByRole('button')).toHaveClass('btn-primary');
+  });
+
+  it('runs interaction test from story', async () => {
+    const { container } = render(<WithIcon />);
+
+    // Play function from story runs automatically
+    await WithIcon.play?.({ canvasElement: container });
+
+    expect(screen.getByRole('button')).toHaveFocus();
+  });
+
+  it('respects disabled state', () => {
+    render(<Disabled />);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+});
+```
+
+**Single story:**
+```typescript
+import { composeStory } from '@storybook/react';
+import meta, { Primary } from './Button.stories';
+
+const PrimaryButton = composeStory(Primary, meta);
+
+test('primary button', () => {
+  render(<PrimaryButton />);
+  // Test with all decorators and args applied
+});
+```
+
+**With custom args override:**
+```typescript
+const { Primary } = composeStories(stories);
+
+test('custom label', () => {
+  render(<Primary>Custom Text</Primary>);
+  expect(screen.getByText('Custom Text')).toBeInTheDocument();
+});
+```
+
 ### Playwright Integration
 Real browser testing with Playwright:
 

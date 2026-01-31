@@ -30,11 +30,59 @@ Automatically detect story variants from:
 ### Story Generation
 Create complete story files with:
 - **CSF 3.0 format** (`satisfies Meta<typeof Component>`)
-- **ArgTypes** with inferred controls (select, boolean, action)
+- **ArgTypes** with smart control inference (see Controls section below)
 - **Variant stories** for all detected variations
 - **Interaction tests** with play functions (Testing Library)
 - **Accessibility tests** with axe-core rules
 - **Component-specific test patterns** (button clicks, input validation, modal focus)
+
+### Storybook 10 Controls (argTypes)
+
+The generator infers appropriate control types based on prop names and types:
+
+| Prop Pattern | Control Type | Example |
+|--------------|--------------|---------|
+| `boolean` type | `{ control: 'boolean' }` | `disabled`, `loading` |
+| `number` type | `{ control: 'number' }` | `count`, `index` |
+| `opacity`, `progress` | `{ control: { type: 'range', min: 0, max: 1 } }` | `opacity`, `percent` |
+| `size`, `width`, `height` | `{ control: { type: 'range', min: 0, max: 100 } }` | `padding`, `margin` |
+| `color`, `background`, `fill` | `{ control: 'color' }` | `backgroundColor`, `textColor` |
+| `*Date`, `*Time`, `timestamp` | `{ control: 'date' }` | `createdDate`, `startTime` |
+| `object`, `Record<>` | `{ control: 'object' }` | `style`, `config` |
+| `array`, `[]` | `{ control: 'object' }` | `items`, `options[]` |
+| `file`, `src`, `source` | `{ control: 'file' }` | `avatarFile`, `imageSrc` |
+| Union type (2-4 options) | `{ options: [...], control: { type: 'radio' } }` | `'sm' \| 'md' \| 'lg'` |
+| Union type (5+ options) | `{ options: [...], control: { type: 'select' } }` | `'a' \| 'b' \| 'c' \| 'd' \| 'e'` |
+| `on*` (callbacks) | `{ action: 'propName' }` | `onClick`, `onChange` |
+| `string` type | `{ control: 'text' }` | `label`, `placeholder` |
+| `ReactNode`, `ReactElement` | `{ control: false }` | `children`, `icon` |
+
+**Example generated argTypes:**
+```typescript
+argTypes: {
+  variant: { options: ['primary', 'secondary', 'outline'], control: { type: 'radio' } },
+  size: { options: ['sm', 'md', 'lg'], control: { type: 'radio' } },
+  disabled: { control: 'boolean' },
+  backgroundColor: { control: 'color' },
+  onClick: { action: 'onClick' },
+  label: { control: 'text' },
+}
+```
+
+**Recommended preview.ts configuration:**
+```typescript
+// .storybook/preview.ts
+const preview: Preview = {
+  parameters: {
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
+    },
+  },
+};
+```
 
 ### Multi-Framework Support
 - **React/TypeScript**: Parse interfaces, types, function components

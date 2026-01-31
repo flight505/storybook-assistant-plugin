@@ -18,17 +18,19 @@ except ImportError:
     print("Install with: pip install requests")
     sys.exit(1)
 
+
 def load_env():
     """Load .env file if it exists"""
-    env_file = Path.cwd() / '.env'
+    env_file = Path.cwd() / ".env"
     if env_file.exists():
         with open(env_file) as f:
             for line in f:
                 line = line.strip()
-                if line and not line.startswith('#') and '=' in line:
-                    key, value = line.split('=', 1)
+                if line and not line.startswith("#") and "=" in line:
+                    key, value = line.split("=", 1)
                     if key not in os.environ:
                         os.environ[key] = value.strip('"').strip("'")
+
 
 def generate_mockup(prompt: str, model: str, output_path: str) -> bool:
     """Generate component mockup using OpenRouter"""
@@ -36,7 +38,7 @@ def generate_mockup(prompt: str, model: str, output_path: str) -> bool:
     # Load environment variables
     load_env()
 
-    api_key = os.getenv('OPENROUTER_API_KEY', '').strip()
+    api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
     if not api_key:
         print("❌ OPENROUTER_API_KEY not found or empty")
         print("\nTo enable visual generation:")
@@ -55,18 +57,10 @@ def generate_mockup(prompt: str, model: str, output_path: str) -> bool:
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
         "HTTP-Referer": "https://github.com/flight505/storybook-assistant-plugin",
-        "X-Title": "Storybook Assistant Plugin"
+        "X-Title": "Storybook Assistant Plugin",
     }
 
-    payload = {
-        "model": model,
-        "messages": [
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    }
+    payload = {"model": model, "messages": [{"role": "user", "content": prompt}]}
 
     try:
         response = requests.post(url, json=payload, headers=headers, timeout=60)
@@ -78,24 +72,24 @@ def generate_mockup(prompt: str, model: str, output_path: str) -> bool:
         image_data = None
 
         # Try different response formats
-        if 'choices' in data and len(data['choices']) > 0:
-            choice = data['choices'][0]
+        if "choices" in data and len(data["choices"]) > 0:
+            choice = data["choices"][0]
 
             # Format 1: content with images array (Gemini)
-            if 'message' in choice and 'content' in choice['message']:
-                content = choice['message']['content']
+            if "message" in choice and "content" in choice["message"]:
+                content = choice["message"]["content"]
                 if isinstance(content, list):
                     for item in content:
-                        if isinstance(item, dict) and item.get('type') == 'image_url':
-                            image_url = item.get('image_url', {}).get('url', '')
-                            if image_url.startswith('data:image'):
-                                image_data = image_url.split(',', 1)[1]
+                        if isinstance(item, dict) and item.get("type") == "image_url":
+                            image_url = item.get("image_url", {}).get("url", "")
+                            if image_url.startswith("data:image"):
+                                image_data = image_url.split(",", 1)[1]
                                 break
-                elif isinstance(content, str) and content.startswith('data:image'):
-                    image_data = content.split(',', 1)[1]
+                elif isinstance(content, str) and content.startswith("data:image"):
+                    image_data = content.split(",", 1)[1]
 
         if not image_data:
-            print(f"❌ No image found in response")
+            print("❌ No image found in response")
             print(f"Response: {json.dumps(data, indent=2)[:500]}")
             return False
 
@@ -103,7 +97,7 @@ def generate_mockup(prompt: str, model: str, output_path: str) -> bool:
         output_file = Path(output_path)
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(output_file, 'wb') as f:
+        with open(output_file, "wb") as f:
             f.write(base64.b64decode(image_data))
 
         print(f"✅ Mockup saved: {output_file}")
@@ -123,23 +117,23 @@ def generate_mockup(prompt: str, model: str, output_path: str) -> bool:
         print(f"❌ Unexpected error: {e}")
         return False
 
+
 def main():
-    parser = argparse.ArgumentParser(
-        description="Generate component mockups using AI"
+    parser = argparse.ArgumentParser(description="Generate component mockups using AI")
+    parser.add_argument(
+        "prompt", help="Description of the component mockup to generate"
     )
     parser.add_argument(
-        'prompt',
-        help='Description of the component mockup to generate'
+        "--model",
+        "-m",
+        default="google/gemini-3-pro-image-preview",
+        help="OpenRouter model ID (default: google/gemini-3-pro-image-preview)",
     )
     parser.add_argument(
-        '--model', '-m',
-        default='google/gemini-3-pro-image-preview',
-        help='OpenRouter model ID (default: google/gemini-3-pro-image-preview)'
-    )
-    parser.add_argument(
-        '--output', '-o',
-        default='mockup.png',
-        help='Output file path (default: mockup.png)'
+        "--output",
+        "-o",
+        default="mockup.png",
+        help="Output file path (default: mockup.png)",
     )
 
     args = parser.parse_args()
@@ -149,5 +143,6 @@ def main():
 
     sys.exit(0 if success else 1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

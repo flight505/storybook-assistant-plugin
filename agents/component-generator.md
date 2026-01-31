@@ -136,17 +136,17 @@ const mockUser = {
   avatar: '/avatar.jpg',
 };
 
-const meta: Meta<typeof UserCard> = {
+const meta = {
   title: 'Components/UserCard',
   component: UserCard,
   args: {
     user: mockUser,
     onFollow: fn(),
   },
-};
+} satisfies Meta<typeof UserCard>;
 
 export default meta;
-type Story = StoryObj<typeof UserCard>;
+type Story = StoryObj<typeof meta>;
 
 // Variants from description
 export const Default: Story = {};

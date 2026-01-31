@@ -29,6 +29,7 @@ except ImportError:
 
 class Category(Enum):
     """Change category classification"""
+
     IGNORE = "ignore"
     EXPECTED = "expected"
     WARNING = "warning"
@@ -38,6 +39,7 @@ class Category(Enum):
 @dataclass
 class VisualChange:
     """Represents a detected visual change"""
+
     change_type: str  # color, position, size, text
     element: str
     old_value: str
@@ -53,6 +55,7 @@ class VisualChange:
 @dataclass
 class AnalysisContext:
     """Context for analysis"""
+
     component_name: str
     story_id: str
     recent_commits: List[Dict]
@@ -66,25 +69,28 @@ def get_recent_commits(days: int = 7) -> List[Dict]:
     """Get recent git commits for context"""
     try:
         cmd = [
-            'git', 'log',
-            f'--since={days} days ago',
-            '--pretty=format:%H|%an|%ae|%s|%ct',
-            '--all'
+            "git",
+            "log",
+            f"--since={days} days ago",
+            "--pretty=format:%H|%an|%ae|%s|%ct",
+            "--all",
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 
         commits = []
-        for line in result.stdout.strip().split('\n'):
+        for line in result.stdout.strip().split("\n"):
             if not line:
                 continue
-            sha, author, email, message, timestamp = line.split('|')
-            commits.append({
-                'sha': sha,
-                'author': author,
-                'email': email,
-                'message': message,
-                'timestamp': int(timestamp)
-            })
+            sha, author, email, message, timestamp = line.split("|")
+            commits.append(
+                {
+                    "sha": sha,
+                    "author": author,
+                    "email": email,
+                    "message": message,
+                    "timestamp": int(timestamp),
+                }
+            )
         return commits
     except (subprocess.CalledProcessError, FileNotFoundError):
         return []
@@ -93,10 +99,10 @@ def get_recent_commits(days: int = 7) -> List[Dict]:
 def load_design_tokens() -> Dict:
     """Load design tokens from project"""
     token_paths = [
-        'src/tokens/',
-        'src/theme/',
-        'src/styles/tokens/',
-        'design-tokens.json'
+        "src/tokens/",
+        "src/theme/",
+        "src/styles/tokens/",
+        "design-tokens.json",
     ]
 
     tokens = {}
@@ -105,16 +111,16 @@ def load_design_tokens() -> Dict:
         if os.path.exists(path):
             if os.path.isdir(path):
                 # Load all JSON/TS files in directory
-                for file in Path(path).rglob('*.json'):
+                for file in Path(path).rglob("*.json"):
                     try:
-                        with open(file, 'r') as f:
+                        with open(file, "r") as f:
                             file_tokens = json.load(f)
                             tokens.update(file_tokens)
                     except (json.JSONDecodeError, IOError):
                         continue
-            elif path.endswith('.json'):
+            elif path.endswith(".json"):
                 try:
-                    with open(path, 'r') as f:
+                    with open(path, "r") as f:
                         tokens = json.load(f)
                         break
                 except (json.JSONDecodeError, IOError):
@@ -131,18 +137,18 @@ def check_token_match(old_value: str, new_value: str, tokens: Dict) -> Optional[
     # Look for tokens with old value that changed to new value
     for token_name, token_value in flat_tokens.items():
         if isinstance(token_value, dict):
-            if token_value.get('value') == new_value:
+            if token_value.get("value") == new_value:
                 # Found new value, check if old value was previous
                 return {
-                    'token_name': token_name,
-                    'old_value': old_value,
-                    'new_value': new_value
+                    "token_name": token_name,
+                    "old_value": old_value,
+                    "new_value": new_value,
                 }
 
     return None
 
 
-def flatten_dict(d: Dict, parent_key: str = '', sep: str = '.') -> Dict:
+def flatten_dict(d: Dict, parent_key: str = "", sep: str = ".") -> Dict:
     """Flatten nested dictionary"""
     items = []
     for k, v in d.items():
@@ -157,8 +163,8 @@ def flatten_dict(d: Dict, parent_key: str = '', sep: str = '.') -> Dict:
 def calculate_pixel_diff(baseline_path: str, current_path: str) -> Tuple[int, float]:
     """Calculate pixel difference between images"""
     try:
-        baseline = Image.open(baseline_path).convert('RGB')
-        current = Image.open(current_path).convert('RGB')
+        baseline = Image.open(baseline_path).convert("RGB")
+        current = Image.open(current_path).convert("RGB")
 
         # Ensure same dimensions
         if baseline.size != current.size:
@@ -189,7 +195,7 @@ def categorize_change(
     new_value: str,
     pixels: int,
     percentage: float,
-    context: AnalysisContext
+    context: AnalysisContext,
 ) -> Tuple[Category, str, str, str]:
     """Categorize a change based on type and context"""
 
@@ -199,44 +205,41 @@ def categorize_change(
             Category.IGNORE,
             "Sub-pixel rendering variation or anti-aliasing",
             f"Only {pixels:,} pixels changed ({percentage:.2f}%)",
-            "AUTO-APPROVE"
+            "AUTO-APPROVE",
         )
 
     # Check design token match for color changes
-    if change_type == 'color':
+    if change_type == "color":
         token_match = check_token_match(old_value, new_value, context.design_tokens)
         if token_match:
             return (
                 Category.EXPECTED,
                 f"Matches design token update: {token_match['token_name']}",
                 f"Token value changed from {old_value} to {new_value}",
-                "APPROVE - Design system update"
+                "APPROVE - Design system update",
             )
 
     # Check commit messages
     relevant_commits = find_relevant_commits(
-        change_type,
-        old_value,
-        new_value,
-        context.recent_commits
+        change_type, old_value, new_value, context.recent_commits
     )
 
     if relevant_commits:
         commit = relevant_commits[0]
         return (
             Category.EXPECTED,
-            f"Change mentioned in recent commit",
+            "Change mentioned in recent commit",
             f"{commit['message']} ({commit['sha'][:7]})",
-            "APPROVE - Mentioned in commit"
+            "APPROVE - Mentioned in commit",
         )
 
     # Layout shifts are almost always errors
-    if change_type == 'position' and percentage > 1.0:
+    if change_type == "position" and percentage > 1.0:
         return (
             Category.ERROR,
             "Layout shift detected without related code changes",
             f"{pixels:,} pixels shifted ({percentage:.2f}% of component)",
-            "REJECT - Investigate layout regression"
+            "REJECT - Investigate layout regression",
         )
 
     # Significant changes without context = warning
@@ -245,7 +248,7 @@ def categorize_change(
             Category.WARNING,
             f"Significant {change_type} change detected",
             f"{pixels:,} pixels affected ({percentage:.2f}%)",
-            "REVIEW - Verify change is intentional"
+            "REVIEW - Verify change is intentional",
         )
 
     # Moderate changes = warning
@@ -253,29 +256,26 @@ def categorize_change(
         Category.WARNING,
         f"{change_type.capitalize()} change without design token update",
         f"{old_value} → {new_value} ({pixels:,} pixels)",
-        "REVIEW - Consider updating design tokens"
+        "REVIEW - Consider updating design tokens",
     )
 
 
 def find_relevant_commits(
-    change_type: str,
-    old_value: str,
-    new_value: str,
-    commits: List[Dict]
+    change_type: str, old_value: str, new_value: str, commits: List[Dict]
 ) -> List[Dict]:
     """Find commits that might relate to this change"""
     keywords = {
-        'color': ['color', 'theme', 'palette', new_value.lower()],
-        'position': ['layout', 'position', 'flexbox', 'grid', 'spacing'],
-        'size': ['size', 'width', 'height', 'dimensions'],
-        'text': ['text', 'content', 'copy', 'typography']
+        "color": ["color", "theme", "palette", new_value.lower()],
+        "position": ["layout", "position", "flexbox", "grid", "spacing"],
+        "size": ["size", "width", "height", "dimensions"],
+        "text": ["text", "content", "copy", "typography"],
     }
 
     relevant = []
     search_terms = keywords.get(change_type, [])
 
     for commit in commits:
-        message_lower = commit['message'].lower()
+        message_lower = commit["message"].lower()
         if any(term in message_lower for term in search_terms):
             relevant.append(commit)
 
@@ -288,22 +288,18 @@ def analyze_visual_diff(context: AnalysisContext) -> Dict:
     # Calculate pixel difference
     try:
         pixels_changed, percentage = calculate_pixel_diff(
-            context.baseline_path,
-            context.current_path
+            context.baseline_path, context.current_path
         )
     except RuntimeError as e:
-        return {
-            'error': str(e),
-            'success': False
-        }
+        return {"error": str(e), "success": False}
 
     # If no changes, return early
     if pixels_changed == 0:
         return {
-            'success': True,
-            'changes_detected': 0,
-            'category': Category.IGNORE.value,
-            'message': 'No visual changes detected'
+            "success": True,
+            "changes_detected": 0,
+            "category": Category.IGNORE.value,
+            "message": "No visual changes detected",
         }
 
     # Analyze the change
@@ -312,31 +308,33 @@ def analyze_visual_diff(context: AnalysisContext) -> Dict:
     # For now, we'll use a simplified approach
 
     category, reason, evidence, recommendation = categorize_change(
-        change_type='unknown',  # Would detect from pixel analysis
-        old_value='',
-        new_value='',
+        change_type="unknown",  # Would detect from pixel analysis
+        old_value="",
+        new_value="",
         pixels=pixels_changed,
         percentage=percentage,
-        context=context
+        context=context,
     )
 
     return {
-        'success': True,
-        'changes_detected': pixels_changed,
-        'percentage': percentage,
-        'category': category.value,
-        'reason': reason,
-        'evidence': evidence,
-        'recommendation': recommendation,
-        'component': context.component_name,
-        'story_id': context.story_id
+        "success": True,
+        "changes_detected": pixels_changed,
+        "percentage": percentage,
+        "category": category.value,
+        "reason": reason,
+        "evidence": evidence,
+        "recommendation": recommendation,
+        "component": context.component_name,
+        "story_id": context.story_id,
     }
 
 
 def main():
     """CLI entry point"""
     if len(sys.argv) < 5:
-        print("Usage: analyze_diff.py <component_name> <story_id> <baseline_path> <current_path>")
+        print(
+            "Usage: analyze_diff.py <component_name> <story_id> <baseline_path> <current_path>"
+        )
         sys.exit(1)
 
     component_name = sys.argv[1]
@@ -358,7 +356,7 @@ def main():
         design_tokens=design_tokens,
         pr_description=None,
         baseline_path=baseline_path,
-        current_path=current_path
+        current_path=current_path,
     )
 
     print(f"Found {len(recent_commits)} recent commits")
@@ -368,13 +366,15 @@ def main():
     # Analyze
     result = analyze_visual_diff(context)
 
-    if not result['success']:
+    if not result["success"]:
         print(f"❌ Error: {result['error']}")
         sys.exit(1)
 
     # Print results
-    print(f"📊 Analysis Results:")
-    print(f"  Changes: {result['changes_detected']:,} pixels ({result.get('percentage', 0):.2f}%)")
+    print("📊 Analysis Results:")
+    print(
+        f"  Changes: {result['changes_detected']:,} pixels ({result.get('percentage', 0):.2f}%)"
+    )
     print(f"  Category: {result['category'].upper()}")
     print(f"  Reason: {result['reason']}")
     print(f"  Evidence: {result['evidence']}")
@@ -382,16 +382,11 @@ def main():
     print()
 
     # Exit code based on category
-    category_exit_codes = {
-        'ignore': 0,
-        'expected': 0,
-        'warning': 1,
-        'error': 2
-    }
+    category_exit_codes = {"ignore": 0, "expected": 0, "warning": 1, "error": 2}
 
-    exit_code = category_exit_codes.get(result['category'], 1)
+    exit_code = category_exit_codes.get(result["category"], 1)
     sys.exit(exit_code)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

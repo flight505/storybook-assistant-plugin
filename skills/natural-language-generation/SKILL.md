@@ -160,17 +160,17 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { NotificationCard } from './NotificationCard';
 
-const meta: Meta<typeof NotificationCard> = {
+const meta = {
   title: 'Components/NotificationCard',
   component: NotificationCard,
   args: {
     onDismiss: fn(),
     timestamp: new Date(),
   },
-};
+} satisfies Meta<typeof NotificationCard>;
 
 export default meta;
-type Story = StoryObj<typeof NotificationCard>;
+type Story = StoryObj<typeof meta>;
 
 export const Success: Story = {
   args: {

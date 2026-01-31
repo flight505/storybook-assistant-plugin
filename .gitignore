@@ -1,6 +1,11 @@
 # User-specific plugin settings
 .claude/*.local.md
 
+# Dev tooling (not part of distributed plugin)
+.claude-dev/
+justfile
+setup_docs/
+
 # OS files
 .DS_Store
 Thumbs.db
