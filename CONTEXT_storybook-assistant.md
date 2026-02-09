@@ -1,7 +1,7 @@
 # Storybook Assistant Plugin - Consolidated Context & Architecture
 
 **Plugin Name:** storybook-assistant
-**Current Version:** 2.1.0
+**Current Version:** 2.1.8
 **Repository:** https://github.com/flight505/storybook-assistant-plugin
 **License:** MIT
 **Author:** Jesper Vang (@flight505)
