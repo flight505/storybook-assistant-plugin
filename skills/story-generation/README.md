@@ -173,7 +173,7 @@ python3 generate_story.py Button.tsx --level full --output Button.stories.tsx
 **Output: `Button.stories.tsx`**
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import { Button } from './Button';
 
 const meta = {

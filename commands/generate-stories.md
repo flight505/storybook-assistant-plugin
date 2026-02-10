@@ -205,7 +205,7 @@ For each selected component, the system generates stories based on the testing l
 ```typescript
 // Button.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import { Button } from './Button';
 
 const meta = {
@@ -575,6 +575,6 @@ export const WithElectronAPI: Story = {
 - Always generate TypeScript stories (even for JS components)
 - Include CSF 3.0 patterns (satisfies Meta<typeof Component>)
 - Add 'autodocs' tag to all generated stories
-- Use framework-specific testing imports (@storybook/test)
+- Use framework-specific testing imports (storybook/test)
 - Generate mockups only for complex components
 - Respect user's testing level selection

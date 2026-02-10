@@ -71,7 +71,7 @@ Stories with play functions that test user interactions.
 
 **Setup:**
 ```typescript
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 export const WithInteraction: Story = {
   args: { children: 'Click me' },

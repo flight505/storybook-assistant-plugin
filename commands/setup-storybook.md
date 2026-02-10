@@ -420,7 +420,7 @@ Create initial example stories to demonstrate SOTA patterns:
 ```typescript
 // src/components/Button/Button.stories.tsx
 import type { Meta, StoryObj } from '@storybook/${FRAMEWORK}';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import { Button } from './Button';
 
 const meta = {

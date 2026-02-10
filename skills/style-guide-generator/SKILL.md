@@ -122,7 +122,7 @@ function App() {
 ### Color Documentation Page
 
 ```mdx
-import { ColorPalette, ColorItem } from '@storybook/blocks';
+import { ColorPalette, ColorItem } from 'storybook/blocks';
 
 # Colors
 
@@ -190,7 +190,7 @@ All color combinations meet WCAG 2.1 AA standards:
 ### Typography Documentation Page
 
 ```mdx
-import { Typeset } from '@storybook/blocks';
+import { Typeset } from 'storybook/blocks';
 
 # Typography
 
@@ -325,7 +325,7 @@ const Card = styled.div`
 ### Button Component Documentation
 
 ```mdx
-import { Meta, Canvas, Story, Controls } from '@storybook/blocks';
+import { Meta, Canvas, Story, Controls } from 'storybook/blocks';
 import * as ButtonStories from './Button.stories';
 
 <Meta of={ButtonStories} />
@@ -447,8 +447,6 @@ const config: StorybookConfig = {
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
     '@storybook/addon-docs',
   ],
   docs: {
